@@ -1,57 +1,86 @@
-#include<string.h>
-#include<conio.h>
-#include<stdio.h>
-typedef struct agenda
-{
-char nombre[30];
-char apellido[30];
-char telefono[12];
-char edad[3];
-}amigos;
+#include <stdio.h>
+#include <string.h>
+#include <windows.h>
+#include <conio.h>
 
-void main ()
-{
-amigos libro[3];
-int i,p=0,j=0;
-char opc;
-do{
+typedef struct agenda {
+    char nombre[30];
+    char apellido[30];
+    char telefono[12];
+    char edad[3];
+} amigos;
 
- gotoxy(10,10);
- printf("A-ingresa contacto");
- gotoxy(10,11);
- printf("B-Ver contactos");
- opc=getch();
- clrscr();
- switch(opc)
- {
-  case 'A':
-  for(j=p;j<2;j++)
-{
-printf("\ningrese nombre\n");
-fflush(stdin);
-gets(libro[i].nombre);
-printf("\ningrese apellido\n");
-fflush(stdin);
-gets(libro[i].apellido);
-printf("\ningrese telefono\n");
-fflush(stdin);
-gets(libro[i].telefono);
-printf("\ningrese edad\n");
-fflush(stdin);
-gets(libro[i].edad);
-clrscr();
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
-p++;
-break;
-  case 'B':
-  clrscr();
-  printf("nombre\tapellido\ttelefono\t\t\tedad\n");
- printf("\n%s",libro[i].nombre);
- printf("\t%s",libro[i].apellido);
-  printf("\t\t%s",libro[i].telefono);
-  printf("\t\t\t%s",libro[i].edad);
-  break;
 
- }
-}while(opc!='C');
+void clrscr() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    DWORD count;
+    DWORD cellCount;
+    COORD homeCoords = { 0, 0 };
+
+    if (hConsole == INVALID_HANDLE_VALUE) return;
+
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+    cellCount = csbi.dwSize.X * csbi.dwSize.Y;
+
+    FillConsoleOutputCharacter(hConsole, ' ', cellCount, homeCoords, &count);
+    FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cellCount, homeCoords, &count);
+    SetConsoleCursorPosition(hConsole, homeCoords);
+}
+
+int main(void) {
+    amigos libro[3];
+    int i = 0, p = 0;
+    char opc;
+
+    do {
+        gotoxy(10, 10);
+        printf("A-ingresa contacto");
+        gotoxy(10, 11);
+        printf("B-Ver contactos");
+        opc = _getch();
+        clrscr();
+
+        switch (opc) {
+        case 'A':
+            if (p < 3) {
+                printf("Ingrese nombre:\n");
+                fgets(libro[p].nombre, sizeof(libro[p].nombre), stdin);
+
+                printf("Ingrese apellido:\n");
+                fgets(libro[p].apellido, sizeof(libro[p].apellido), stdin);
+
+                printf("Ingrese telefono:\n");
+                fgets(libro[p].telefono, sizeof(libro[p].telefono), stdin);
+
+                printf("Ingrese edad:\n");
+                fgets(libro[p].edad, sizeof(libro[p].edad), stdin);
+
+                p++;
+            }
+            break;
+
+        case 'B':
+            printf("nombre\tapellido\ttelefono\t\tedad\n");
+            for (i = 0; i < p; i++) {
+                printf("%s\t%s\t%s\t\t%s",
+                    libro[i].nombre,
+                    libro[i].apellido,
+                    libro[i].telefono,
+                    libro[i].edad);
+            }
+            _getch();
+            break;
+        }
+        clrscr();
+
+    } while (opc != 'C');
+
+    return 0;
 }
