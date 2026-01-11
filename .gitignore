@@ -1,0 +1,38 @@
+# ===== Visual Studio =====
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ===== Build results =====
+Debug/
+Release/
+x64/
+x86/
+Build/
+
+# ===== Visual C++ cache files =====
+*.obj
+*.exe
+*.ilk
+*.pdb
+*.idb
+*.tlog
+*.log
+
+# ===== Temporary files =====
+*.tmp
+*.bak
+*.swp
+*.scc
+
+# ===== OS files =====
+Thumbs.db
+Desktop.ini
+
+# ===== CMake (si se usa en el futuro) =====
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
